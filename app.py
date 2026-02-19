@@ -410,13 +410,15 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
         # Add statistics
         median_val = np.median(data)
         mean_val = np.mean(data)
-        p95 = np.percentile(data, 95)
+        p99 = np.percentile(data, 99)
+        p99_9 = np.percentile(data, 99.9)
+        p99_998 = np.percentile(data, 99.998)
         
         fig_temp.add_annotation(
             xref='x', yref='y',
             x=sorted_data[-1],
             y=0.5,
-            text=f"n={len(data)}, μ={mean_val:.1f}°C, m={median_val:.1f}°C, 95th={p95:.1f}°C",
+            text=f"n={len(data)}, μ={mean_val:.1f}°C, m={median_val:.1f}°C, 99th={p99:.1f}°C, 99.9th={p99_9:.1f}°C, 99.998th={p99_998:.1f}°C",
             showarrow=False,
             xanchor='right',
             font=dict(size=10, color='gray')
