@@ -1,0 +1,105 @@
+{
+  "CZ4": [
+    {"city": "Vancouver", "province": "BC", " weather_file": "Vancouver Intl AP"},
+    {"city": "Agassiz", "province": "BC", " weather_file": "Agassiz RCS"},
+    {"city": "Victoria (Uni)", "province": "BC", " weather_file": "Victoria University CS"},
+    {"city": "Victoria (Gonzales)", "province": "BC", " weather_file": "Victoria Gonzales CS"},
+    {"city": "Victoria (Airport)", "province": "BC", " weather_file": "Victoria Intl AP"},
+    {"city": "Comox", "province": "BC", " weather_file": "Comox AP"},
+    {"city": "Jordan River", "province": "BC", " weather_file": "Sheringham Point"},
+    {"city": "Abbotsford", "province": "BC", " weather_file": "Abbotsford AP"},
+    {"city": "Point Atkinson", "province": "BC", " weather_file": "Point Atkinson"},
+    {"city": "Sandheads", "province": "BC", " weather_file": "Sandheads CS"},
+    {"city": "Discovery Island", "province": "BC", " weather_file": "Discovery Island"},
+    {"city": "Pit Meadows", "province": "BC", " weather_file": "Pitt Meadows CS"},
+    {"city": "Saturna Island", "province": "BC", " weather_file": "Saturna Island CS"},
+    {"city": "Entrance Island", "province": "BC", " weather_file": "Entrance Island"}
+
+
+
+  ],
+  "CZ5": [
+    {"city": "Toronto (Downtown)", "province": "ON", " weather_file": "Toronto City"},
+    {"city": "Osoyoos", "province": "BC", " weather_file": "Osoyoos CS"},
+    {"city": "Windsor", "province": "ON", " weather_file": "Windsor AP"},
+    {"city": "Sandspit", "province": "BC", " weather_file": "Sandspit"},
+    {"city": "Holland Rock", "province": "BC", " weather_file": "Holland Rock"},
+    {"city": "Nakusp", "province": "BC", " weather_file": "Nakusp CS"},
+    {"city": "Kamloops", "province": "BC", " weather_file": "Kamloops AP"},
+	  {"city": "Vineland", "province": "ON", " weather_file": "Vineland Station RCS"},
+    {"city": "Yarmouth", "province": "NS", " weather_file": "Yarmouth AP"}
+	
+  ],
+  "CZ6": [
+    {"city": "Montreal", "province": "QC", " weather_file": "Mctavish"},
+    {"city": "Princeton", "province": "BC", " weather_file": "Princeton CS"},
+    {"city": "Markham", "province": "ON", " weather_file": "Toronto Buttonville AP"},
+    {"city": "Dunville", "province": "NL", " weather_file": "Argentia AUT"},
+    {"city": "Terrace", "province": "BC", " weather_file": "Terrace AP"},
+    {"city": "Medicine Hat", "province": "AB", " weather_file": "Medicine Hat RCS"},
+    {"city": "Egbert", "province": "ON", " weather_file": "Egbert CS"},
+	  {"city": "Trenton", "province": "ON", " weather_file": "Trenton AP"},
+    {"city": "Stephenville", "province": "NL", " weather_file": "Stephenville AP"},
+    {"city": "Saint John", "province": "NB", " weather_file": "Saint John AP"},
+    {"city": "Shearwater", "province": "NS", " weather_file": "Shearwater RCS"},
+	  {"city": "Quesnel", "province": "BC", " weather_file": "Quesnel"},
+    {"city": "Pincher Creek", "province": "AB", " weather_file": "Pincher Creek"},
+    {"city": "Muskoka", "province": "ON", " weather_file": "Muskoka"},
+    {"city": "Moncton", "province": "NB", " weather_file": "Moncton Intl AP"},
+    {"city": "Taber", "province": "AB", " weather_file": "Fincastle AgDM"}
+
+
+  ],
+  "CZ7A": [
+    {"city": "Calgary", "province": "AB", " weather_file": "Calgary Intl AP"},
+    {"city": "Estevan", "province": "SK", " weather_file": "Estevan AP"},
+    {"city": "Morden", "province": "MB", " weather_file": "Morden CDA CS"},
+    {"city": "Port Aux Basques", "province": "NL", " weather_file": "Port Aux Basques"},
+    {"city": "Banff", "province": "AB", " weather_file": "Banff CS"},
+	  {"city": "Jasper", "province": "AB", " weather_file": "Jasper Warden"},
+    {"city": "Cold Lake", "province": "AB", " weather_file": "Cold Lake AP"},
+    {"city": "Mont Joli", "province": "QC", " weather_file": "Mont Joli AP"},
+    {"city": "Coronation", "province": "AB", " weather_file": "Coronation Climate"},
+    {"city": "Saskatoon", "province": "SK", " weather_file": "Saskatoon Intl AP"}
+
+  ],
+  
+  "CZ7B": [
+    {"city": "Fort Mcmurray", "province": "AB", " weather_file": "Fort Mcmurray AP"},
+    {"city": "Kirkland Lake", "province": "ON", " weather_file": "Kirkland Lake CS"},
+    {"city": "Dease Lake", "province": "BC", " weather_file": "Dease Lake AUT"},
+    {"city": "Teslin", "province": "YT", " weather_file": "Teslin AUT"},
+    {"city": "Whitehorse", "province": "YT", " weather_file": "Whitehorse AP"},
+    {"city": "Hudson Bay", "province": "SK", " weather_file": "Hudson Bay AUT"},
+    {"city":"Yoho", "province": "BC", " weather_file": "Yoho Park"},
+    {"city":"Peace River", "province": "AB", " weather_file": "Peace River AP"},
+    {"city":"Foret Montmorency", "province": "QC", " weather_file": "Foret Montmorency RCS"},
+    {"city":"Moosonee", "province": "ON", " weather_file": "Moosonee"},
+    {"city":"High Level", "province": "AB", " weather_file": "High Level"},
+    {"city":"Lansdowne House", "province": "ON", " weather_file": "Lansdowne House AUT"},
+    {"city":"Fort Nelson", "province": "BC", " weather_file": "Fort Nelson AP"},
+    {"city":"Goose", "province": "NL", " weather_file": "Goose AP"},
+    {"city":"Nagagami", "province": "ON", " weather_file": "Nagagami AUT"},
+    {"city":"Flin Flon", "province": "MB", " weather_file": "Flin Flon"},
+    {"city":"Fort Vermilion", "province": "AB", " weather_file": "Fort Vermilion"}
+	
+	
+  ],
+  "CZ8": [
+    {"city": "Yellowknife", "province": "NT", " weather_file": "Yellowknife AP"},
+    {"city": "Island Falls", "province": "SK", " weather_file": "Island Falls AUT"},
+    {"city": "Mould Bay", "province": "NL", " weather_file": "Mould Bay CS"},
+    {"city": "Fort Simpson", "province": "NT", " weather_file": "Fort Simpson AP"},
+    {"city": "Schefferville", "province": "QC", " weather_file": "Schefferville AP"},
+    {"city": "Kuujjuaq", "province": "QC", " weather_file": "Kuujjuaq AP"},
+    {"city": "Iqaluit", "province": "NU", " weather_file": "Iqaluit AP"},
+    {"city": "Baker Lake", "province": "NU", " weather_file": "Baker Lake AP"},
+    {"city": "Rankin Inlet", "province": "NU", " weather_file": "Rankin Inlet AP"},
+    {"city": "Watson Lake", "province": "YT", " weather_file": "Watson Lake AP"},
+    {"city": "Clyde River", "province": "NU", " weather_file": "Clyde River Climate"},
+    {"city": "Alert", "province": "NU", " weather_file": "Alert Climate"}
+
+
+
+  ]
+}

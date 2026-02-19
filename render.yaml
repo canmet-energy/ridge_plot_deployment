@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: overheating-analysis
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:server --bind 0.0.0.0:$PORT
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
