@@ -273,17 +273,16 @@ app.layout = html.Div([
 )
 def update_plot(cdd10_range, tdb_range, fdwr_selected):
     df_filtered = df.copy()
-    
+
+    # Apply CDD10 OR Tdb2.5 filter
     df_filtered = df_filtered[
-        (df_filtered['CDD10'] >= cdd10_range[0]) & 
-        (df_filtered['CDD10'] <= cdd10_range[1])
+        ((df_filtered['CDD10'] >= cdd10_range[0]) & 
+         (df_filtered['CDD10'] <= cdd10_range[1])) |
+        ((df_filtered['Tdb2.5'] >= tdb_range[0]) & 
+         (df_filtered['Tdb2.5'] <= tdb_range[1]))
     ]
     
-    df_filtered = df_filtered[
-        (df_filtered['Tdb2.5'] >= tdb_range[0]) & 
-        (df_filtered['Tdb2.5'] <= tdb_range[1])
-    ]
-    
+    # Apply FDWR filter (AND with above)
     if fdwr_selected:
         df_filtered = df_filtered[df_filtered['fdwr_rounded'].isin(fdwr_selected)]
     
