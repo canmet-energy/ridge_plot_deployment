@@ -202,7 +202,7 @@ initial_fig = create_ridgeline_plot(df)
 # Create interactive sliders and multi-select dropdown
 cdd10_min, cdd10_max = df['CDD10'].min(), df['CDD10'].max()
 tdb_min, tdb_max = df['Tdb2.5'].min(), df['Tdb2.5'].max()
-fdwr_values = sorted(df['fdwr_rounded'].unique())
+fdwr_values = sorted(df['fdwr_rounded'].dropna().unique())
 
 # Create Dash app for interactive filtering
 print("\nCreating interactive dashboard...")
@@ -213,7 +213,7 @@ app = Dash(__name__)
 server = app.server  # Expose server for Gunicorn
 
 app.layout = html.Div([
-    html.H1("Overheating Analysis - Interactive Ridgeline Plot", 
+    html.H1("Overheating Analysis - Interactive Tool", 
             style={'textAlign': 'center', 'color': '#2c3e50'}),
     
     html.Div([
