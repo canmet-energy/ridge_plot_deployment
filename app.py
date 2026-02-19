@@ -149,13 +149,16 @@ def create_ridgeline_plot(df_filtered):
             # Add statistics as annotation
             median_val = np.median(data)
             mean_val = np.mean(data)
-            p90 = np.percentile(data, 90)
+            p99 = np.percentile(data, 99)
+            p99_9 = np.percentile(data, 99.9)
+            p99_998 = np.percentile(data, 99.998)
+            
             
             fig.add_annotation(
                 xref=f'x{i}', yref=f'y{i}',
                 x=sorted_data[-1],
                 y=0.5,
-                text=f"n={len(data)}, μ={mean_val:.1f}h, m={median_val:.1f}h, 90th={p90:.1f}h",
+                text=f"n={len(data)}, μ={mean_val:.1f}h, m={median_val:.1f}h, 99th={p99:.1f}h, 99.9th={p99_9:.1f}h, 99.998th={p99_998:.1f}h",
                 showarrow=False,
                 xanchor='right',
                 font=dict(size=9, color='gray')
