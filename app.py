@@ -218,55 +218,62 @@ app.layout = html.Div([
     
     html.Div([
         html.Div([
-            html.Label('CDD10 Range (Cooling Degree Days):', 
-                      style={'fontWeight': 'bold', 'marginBottom': '5px'}),
-            dcc.RangeSlider(
-                id='cdd10-slider',
-                min=float(cdd10_min),
-                max=float(cdd10_max),
-                step=10,
-                value=[float(cdd10_min), float(cdd10_max)],
-                marks={int(v): f'{int(v)}' for v in np.linspace(cdd10_min, cdd10_max, 8)},
-                tooltip={"placement": "bottom", "always_visible": True}
-            )
-        ], style={'width': '90%', 'padding': '20px', 'margin': 'auto'}),
+            html.Div([
+                html.Label('CDD10 Range (Cooling Degree Days):', 
+                          style={'fontWeight': 'bold', 'marginBottom': '5px'}),
+                dcc.RangeSlider(
+                    id='cdd10-slider',
+                    min=float(cdd10_min),
+                    max=float(cdd10_max),
+                    step=10,
+                    value=[float(cdd10_min), float(cdd10_max)],
+                    marks={int(v): f'{int(v)}' for v in np.linspace(cdd10_min, cdd10_max, 8)},
+                    tooltip={"placement": "bottom", "always_visible": True}
+                )
+            ], style={'width': '100%', 'padding': '20px'}),
+            
+            html.Div([
+                html.Label('Tdb 2.5% Range (Design Temperature °C):', 
+                          style={'fontWeight': 'bold', 'marginBottom': '5px'}),
+                dcc.RangeSlider(
+                    id='tdb-slider',
+                    min=float(tdb_min),
+                    max=float(tdb_max),
+                    step=0.5,
+                    value=[float(tdb_min), float(tdb_max)],
+                    marks={int(v): f'{int(v)}°C' for v in np.linspace(tdb_min, tdb_max, 8)},
+                    tooltip={"placement": "bottom", "always_visible": True}
+                )
+            ], style={'width': '100%', 'padding': '20px'}),
+            
+            html.Div([
+                html.Label('FDWR Values (Facade to Wall Ratio):', 
+                          style={'fontWeight': 'bold', 'marginBottom': '5px'}),
+                dcc.Dropdown(
+                    id='fdwr-dropdown',
+                    options=[{'label': f'{v:.3f}', 'value': v} for v in fdwr_values],
+                    value=fdwr_values,
+                    multi=True,
+                    placeholder="Select FDWR values..."
+                )
+            ], style={'width': '100%', 'padding': '20px'}),
+        ], style={'width': '35%', 'display': 'inline-block', 'verticalAlign': 'top'}),
         
         html.Div([
-            html.Label('Tdb 2.5% Range (Design Temperature °C):', 
-                      style={'fontWeight': 'bold', 'marginBottom': '5px'}),
-            dcc.RangeSlider(
-                id='tdb-slider',
-                min=float(tdb_min),
-                max=float(tdb_max),
-                step=0.5,
-                value=[float(tdb_min), float(tdb_max)],
-                marks={int(v): f'{int(v)}°C' for v in np.linspace(tdb_min, tdb_max, 8)},
-                tooltip={"placement": "bottom", "always_visible": True}
-            )
-        ], style={'width': '90%', 'padding': '20px', 'margin': 'auto'}),
-        
-        html.Div([
-            html.Label('FDWR Values (Facade to Wall Ratio):', 
-                      style={'fontWeight': 'bold', 'marginBottom': '5px'}),
-            dcc.Dropdown(
-                id='fdwr-dropdown',
-                options=[{'label': f'{v:.3f}', 'value': v} for v in fdwr_values],
-                value=fdwr_values,
-                multi=True,
-                placeholder="Select FDWR values..."
-            )
-        ], style={'width': '90%', 'padding': '20px', 'margin': 'auto'}),
-        
-        html.Div(id='filter-summary', 
-                style={'textAlign': 'center', 'padding': '10px', 'fontStyle': 'italic', 'color': '#7f8c8d'})
-    ]),
+            dcc.Graph(id='cdd-tdb-plot', style={'height': '500px'})
+        ], style={'width': '65%', 'display': 'inline-block', 'verticalAlign': 'top'})
+    ], style={'display': 'flex', 'width': '100%'}),
+    
+    html.Div(id='filter-summary', 
+            style={'textAlign': 'center', 'padding': '10px', 'fontStyle': 'italic', 'color': '#7f8c8d'}),
     
     dcc.Graph(id='ridgeline-plot', style={'height': '950px'})
 ])
 
 @app.callback(
     [Output('ridgeline-plot', 'figure'),
-     Output('filter-summary', 'children')],
+     Output('filter-summary', 'children'),
+     Output('cdd-tdb-plot', 'figure')],
     [Input('cdd10-slider', 'value'),
      Input('tdb-slider', 'value'),
      Input('fdwr-dropdown', 'value')]
@@ -304,7 +311,65 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
         )
         fig.update_layout(height=900, width=1200)
     
-    return fig, summary
+    # Create CDD vs Tdb scatter plot with selection highlighting
+    fig_scatter = go.Figure()
+    
+    # Determine which points are selected
+    points_in_selection = (
+        ((df['CDD10'] >= cdd10_range[0]) & (df['CDD10'] <= cdd10_range[1])) |
+        ((df['Tdb2.5'] >= tdb_range[0]) & (df['Tdb2.5'] <= tdb_range[1]))
+    )
+    
+    if fdwr_selected:
+        points_in_selection = points_in_selection & df['fdwr_rounded'].isin(fdwr_selected)
+    
+    # Add unselected points with shadow effect
+    df_unselected = df[~points_in_selection]
+    if len(df_unselected) > 0:
+        fig_scatter.add_trace(go.Scatter(
+            x=df_unselected['CDD10'],
+            y=df_unselected['Tdb2.5'],
+            mode='markers',
+            marker=dict(size=5, color='rgba(200, 200, 200, 0.2)', line=dict(width=0)),
+            name='Unselected',
+            hovertemplate='<b>Unselected</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
+        ))
+    
+    # Add selected points
+    df_selected = df[points_in_selection]
+    if len(df_selected) > 0:
+        fig_scatter.add_trace(go.Scatter(
+            x=df_selected['CDD10'],
+            y=df_selected['Tdb2.5'],
+            mode='markers',
+            marker=dict(size=6, color='rgba(0, 100, 255, 0.6)', line=dict(width=1, color='darkblue')),
+            name='Selected',
+            hovertemplate='<b>Selected</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
+        ))
+    
+    # Add vertical lines for CDD10 range
+    fig_scatter.add_vline(x=cdd10_range[0], line_dash="dash", line_color="red", 
+                          annotation_text="CDD min", annotation_position="top left")
+    fig_scatter.add_vline(x=cdd10_range[1], line_dash="dash", line_color="red",
+                          annotation_text="CDD max", annotation_position="top right")
+    
+    # Add horizontal lines for Tdb range
+    fig_scatter.add_hline(y=tdb_range[0], line_dash="dash", line_color="green",
+                          annotation_text="Tdb min", annotation_position="left")
+    fig_scatter.add_hline(y=tdb_range[1], line_dash="dash", line_color="green",
+                          annotation_text="Tdb max", annotation_position="right")
+    
+    fig_scatter.update_layout(
+        title='CDD10 vs Tdb2.5 - Climate Space',
+        xaxis_title='CDD10 (Cooling Degree Days)',
+        yaxis_title='Tdb2.5 (Design Temperature °C)',
+        height=500,
+        width=900,
+        template='plotly_white',
+        hovermode='closest'
+    )
+    
+    return fig, summary, fig_scatter
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8050))
