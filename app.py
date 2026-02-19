@@ -247,7 +247,7 @@ app.layout = html.Div([
             ], style={'width': '100%', 'padding': '20px'}),
             
             html.Div([
-                html.Label('FDWR Values (Facade to Wall Ratio):', 
+                html.Label('FDWR Values (Fenestration to Wall Ratio):', 
                           style={'fontWeight': 'bold', 'marginBottom': '5px'}),
                 dcc.Dropdown(
                     id='fdwr-dropdown',
@@ -261,7 +261,7 @@ app.layout = html.Div([
         
         html.Div([
             dcc.Graph(id='cdd-tdb-plot', style={'height': '500px'})
-        ], style={'width': '65%', 'display': 'inline-block', 'verticalAlign': 'top'})
+        ], style={'width': '55%', 'display': 'inline-block', 'verticalAlign': 'top', 'marginLeft': '20px'})
     ], style={'display': 'flex', 'width': '100%'}),
     
     html.Div(id='filter-summary', 
