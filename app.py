@@ -34,6 +34,35 @@ with open(script_dir / 'climate_zone_cities.json', 'r') as f:
 
 climate_data = pd.read_csv(script_dir / 'cwec_climate_data.csv.gz')
 
+
+def _norm(s: str) -> str:
+    return (
+        str(s)
+        .replace("\ufeff", "")      # strip BOM if present
+        .replace("\u00A0", " ")     # NBSP -> space
+        .strip()
+        .lower()
+        .replace(" ", "_")
+    )
+
+climate_data.columns = [_norm(c) for c in climate_data.columns]
+
+station_key = 'station_name'
+cdd_key = 'cdd10' if 'cdd10' in climate_data.columns else None
+tdb_key = 'tdb2_5' if 'tdb2_5' in climate_data.columns else ('tdb' if 'tdb' in climate_data.columns else None)
+
+weather_to_climate = {}
+for _, row in climate_data.iterrows():
+    st = str(row.get(station_key, '')).strip()
+    if not st:
+        continue
+    weather_to_climate[st] = {
+        'CDD10': row.get(cdd_key, np.nan) if cdd_key else np.nan,
+        'Tdb2.5': row.get(tdb_key, np.nan) if tdb_key else np.nan,
+    }
+
+
+
 print(f"Loaded {len(df)} simulation results")
 
 # Create mapping from city to weather_file using climate_zone_cities.json
