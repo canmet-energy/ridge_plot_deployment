@@ -257,7 +257,7 @@ app.layout = html.Div([
                     placeholder="Select FDWR values..."
                 )
             ], style={'width': '100%', 'padding': '20px'}),
-        ], style={'width': '35%', 'display': 'inline-block', 'verticalAlign': 'top'}),
+        ], style={'width': '30%', 'display': 'inline-block', 'verticalAlign': 'top'}),
         
         html.Div([
             dcc.Graph(id='cdd-tdb-plot', style={'height': '500px'})
