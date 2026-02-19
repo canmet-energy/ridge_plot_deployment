@@ -312,55 +312,59 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
         fig.update_layout(height=900, width=1200)
     
     # Create CDD vs Tdb scatter plot with selection highlighting
+    # Plot unique climate points only (not all simulations)
     fig_scatter = go.Figure()
     
-    # Determine which points are selected
-    points_in_selection = (
-        ((df['CDD10'] >= cdd10_range[0]) & (df['CDD10'] <= cdd10_range[1])) |
-        ((df['Tdb2.5'] >= tdb_range[0]) & (df['Tdb2.5'] <= tdb_range[1]))
+    # Determine which climate points are selected
+    climate_in_selection = (
+        ((climate_data['CDD10'] >= cdd10_range[0]) & (climate_data['CDD10'] <= cdd10_range[1])) |
+        ((climate_data['Tdb'] >= tdb_range[0]) & (climate_data['Tdb'] <= tdb_range[1]))
     )
     
-    if fdwr_selected:
-        points_in_selection = points_in_selection & df['fdwr_rounded'].isin(fdwr_selected)
-    
-    # Add unselected points with shadow effect
-    df_unselected = df[~points_in_selection]
-    if len(df_unselected) > 0:
+    # Add unselected climate points
+    climate_unselected = climate_data[~climate_in_selection]
+    if len(climate_unselected) > 0:
         fig_scatter.add_trace(go.Scatter(
-            x=df_unselected['CDD10'],
-            y=df_unselected['Tdb2.5'],
-            mode='markers',
-            marker=dict(size=5, color='rgba(200, 200, 200, 0.2)', line=dict(width=0)),
+            x=climate_unselected['CDD10'],
+            y=climate_unselected['Tdb'],
+            mode='markers+text',
+            marker=dict(size=8, color='rgba(200, 200, 200, 0.3)', line=dict(width=1, color='gray')),
+            text=climate_unselected['Station_Name'],
+            textposition="top center",
+            textfont=dict(size=8, color='rgba(200, 200, 200, 0.5)'),
             name='Unselected',
-            hovertemplate='<b>Unselected</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
+            hovertemplate='<b>%{text}</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
         ))
     
-    # Add selected points
-    df_selected = df[points_in_selection]
-    if len(df_selected) > 0:
+    # Add selected climate points
+    climate_selected = climate_data[climate_in_selection]
+    if len(climate_selected) > 0:
         fig_scatter.add_trace(go.Scatter(
-            x=df_selected['CDD10'],
-            y=df_selected['Tdb2.5'],
-            mode='markers',
-            marker=dict(size=6, color='rgba(0, 100, 255, 0.6)', line=dict(width=1, color='darkblue')),
+            x=climate_selected['CDD10'],
+            y=climate_selected['Tdb'],
+            mode='markers+text',
+            marker=dict(size=10, color='rgba(0, 100, 255, 0.7)', line=dict(width=2, color='darkblue')),
+            text=climate_selected['Station_Name'],
+            textposition="top center",
+            textfont=dict(size=9, color='darkblue', weight='bold'),
             name='Selected',
-            hovertemplate='<b>Selected</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
+            hovertemplate='<b>%{text}</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
         ))
     
     # Add vertical lines for CDD10 range
-    fig_scatter.add_vline(x=cdd10_range[0], line_dash="dash", line_color="red", 
+    fig_scatter.add_vline(x=cdd10_range[0], line_dash="dash", line_color="red", line_width=2,
                           annotation_text="CDD min", annotation_position="top left")
-    fig_scatter.add_vline(x=cdd10_range[1], line_dash="dash", line_color="red",
+    fig_scatter.add_vline(x=cdd10_range[1], line_dash="dash", line_color="red", line_width=2,
                           annotation_text="CDD max", annotation_position="top right")
     
     # Add horizontal lines for Tdb range
-    fig_scatter.add_hline(y=tdb_range[0], line_dash="dash", line_color="green",
+    fig_scatter.add_hline(y=tdb_range[0], line_dash="dash", line_color="green", line_width=2,
                           annotation_text="Tdb min", annotation_position="left")
-    fig_scatter.add_hline(y=tdb_range[1], line_dash="dash", line_color="green",
+    fig_scatter.add_hline(y=tdb_range[1], line_dash="dash", line_color="green", line_width=2,
                           annotation_text="Tdb max", annotation_position="right")
     
     fig_scatter.update_layout(
-        title='CDD10 vs Tdb2.5 - Climate Space',
+        title='Climate Zones - CDD10 vs Tdb2.5',
         xaxis_title='CDD10 (Cooling Degree Days)',
         yaxis_title='Tdb2.5 (Design Temperature °C)',
         height=500,
