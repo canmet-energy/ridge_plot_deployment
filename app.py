@@ -14,14 +14,25 @@ import os
 # Get script directory and construct paths relative to it
 script_dir = Path(__file__).parent
 
+
+dtype_map = {
+    "all_main_zones_above_26_percent": "float32",
+    "all_main_zones_above_26_percent_july": "float32",
+    "all_main_zones_above_26_percent_peak_week": "float32",
+    "all_main_zones_above_26_percent_peak_day": "float32",
+    "fdwr": "float32",
+    # add others you rely on numerically
+}
+
+
 # Load data files
 print("Loading data files...")
-df = pd.read_csv(script_dir / 'parametric_results.csv', low_memory=False)
+df = pd.read_csv(script_dir / 'parametric_results.csv.gz', compression="gzip", dtype=dtype_map)
 
 with open(script_dir / 'climate_zone_cities.json', 'r') as f:
     climate_zone_cities = json.load(f)
 
-climate_data = pd.read_csv(script_dir / 'cwec_climate_data.csv')
+climate_data = pd.read_csv(script_dir / 'cwec_climate_data.csv.gz')
 
 print(f"Loaded {len(df)} simulation results")
 
