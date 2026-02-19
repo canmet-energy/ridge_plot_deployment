@@ -21,7 +21,7 @@ dtype_map = {
     "all_main_zones_above_26_percent_peak_week": "float32",
     "all_main_zones_above_26_percent_peak_day": "float32",
     "fdwr": "float32",
-    # add others you rely on numerically
+    "house_peak_summer_temp": "float32",
 }
 
 
@@ -267,13 +267,16 @@ app.layout = html.Div([
     html.Div(id='filter-summary', 
             style={'textAlign': 'center', 'padding': '10px', 'fontStyle': 'italic', 'color': '#7f8c8d'}),
     
-    dcc.Graph(id='ridgeline-plot', style={'height': '950px'})
+    dcc.Graph(id='ridgeline-plot', style={'height': '950px'}),
+    
+    dcc.Graph(id='temp-distribution-plot', style={'height': '500px'})
 ])
 
 @app.callback(
     [Output('ridgeline-plot', 'figure'),
      Output('filter-summary', 'children'),
-     Output('cdd-tdb-plot', 'figure')],
+     Output('cdd-tdb-plot', 'figure'),
+     Output('temp-distribution-plot', 'figure')],
     [Input('cdd10-slider', 'value'),
      Input('tdb-slider', 'value'),
      Input('fdwr-dropdown', 'value')]
@@ -373,7 +376,64 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
         hovermode='closest'
     )
     
-    return fig, summary, fig_scatter
+    # Create peak summer temperature distribution
+    fig_temp = go.Figure()
+    data = df_filtered['house_peak_summer_temp'].dropna()
+    
+    if len(data) > 0:
+        sorted_data = np.sort(data)
+        n = len(sorted_data)
+        ccdf = np.arange(n, 0, -1) / n
+        
+        # Add baseline at 0%
+        fig_temp.add_trace(go.Scatter(
+            x=[sorted_data[0], sorted_data[-1]],
+            y=[0, 0],
+            mode='lines',
+            line=dict(color='gray', width=1),
+            showlegend=False,
+            hoverinfo='skip',
+            fill=None
+        ))
+        
+        # Add complementary CDF curve
+        fig_temp.add_trace(go.Scatter(
+            x=sorted_data,
+            y=ccdf,
+            fill='tonexty',
+            fillcolor='rgba(100, 200, 255, 0.6)',
+            line=dict(color='rgba(0, 100, 200, 1.0)', width=2),
+            name='House Peak Summer Temperature',
+            hovertemplate='<b>Temperature</b><br>°C: %{x:.1f}<br>Proportion ≥ x: %{y:.1%}<extra></extra>'
+        ))
+        
+        # Add statistics
+        median_val = np.median(data)
+        mean_val = np.mean(data)
+        p95 = np.percentile(data, 95)
+        
+        fig_temp.add_annotation(
+            xref='x', yref='y',
+            x=sorted_data[-1],
+            y=0.5,
+            text=f"n={len(data)}, μ={mean_val:.1f}°C, m={median_val:.1f}°C, 95th={p95:.1f}°C",
+            showarrow=False,
+            xanchor='right',
+            font=dict(size=10, color='gray')
+        )
+    
+    fig_temp.update_layout(
+        title='House Peak Summer Temperature Distribution',
+        xaxis_title='Temperature (°C)',
+        yaxis_title='Proportion',
+        height=500,
+        width=1200,
+        template='plotly_white',
+        showlegend=False,
+        yaxis=dict(tickformat='.0%', range=[-0.05, 1.05])
+    )
+    
+    return fig, summary, fig_scatter, fig_temp
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8050))
