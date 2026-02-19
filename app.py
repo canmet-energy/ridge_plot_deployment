@@ -327,7 +327,7 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
         fig_scatter.add_trace(go.Scatter(
             x=climate_unselected['CDD10'],
             y=climate_unselected['Tdb'],
-            mode='markers+text',
+            mode='markers',
             marker=dict(size=8, color='rgba(200, 200, 200, 0.3)', line=dict(width=1, color='gray')),
             text=climate_unselected['Station_Name'],
             textposition="top center",
@@ -342,7 +342,7 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
         fig_scatter.add_trace(go.Scatter(
             x=climate_selected['CDD10'],
             y=climate_selected['Tdb'],
-            mode='markers+text',
+            mode='markers',
             marker=dict(size=10, color='rgba(0, 100, 255, 0.7)', line=dict(width=2, color='darkblue')),
             text=climate_selected['Station_Name'],
             textposition="top center",
