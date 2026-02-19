@@ -346,7 +346,7 @@ def update_plot(cdd10_range, tdb_range, fdwr_selected):
             marker=dict(size=10, color='rgba(0, 100, 255, 0.7)', line=dict(width=2, color='darkblue')),
             text=climate_selected['Station_Name'],
             textposition="top center",
-            textfont=dict(size=9, color='darkblue', weight='bold'),
+            textfont=dict(size=9, color='darkblue'),
             name='Selected',
             hovertemplate='<b>%{text}</b><br>CDD10: %{x:.0f}<br>Tdb2.5: %{y:.1f}°C<extra></extra>'
         ))
