@@ -267,7 +267,18 @@ app.layout = html.Div([
     html.Div(id='filter-summary', 
             style={'textAlign': 'center', 'padding': '10px', 'fontStyle': 'italic', 'color': '#7f8c8d'}),
     
-    dcc.Graph(id='ridgeline-plot', style={'height': '950px'}),
+    html.Div([
+        html.Div([
+            dcc.Graph(id='ridgeline-plot', style={'height': '950px', 'width': '100%'})
+        ], style={'display': 'inline-block', 'width': '75%', 'verticalAlign': 'top'}),
+        
+        html.Div([
+            html.H3("Analysis Notes", style={'marginTop': '0', 'color': '#2c3e50'}),
+            html.P("In houses with multiple storeys above grade, hours above 26°C are calculated as for periods when ALL storeys are above 26°C. This means that if only one storey is overheating, it will not be counted in the hours above 26°C metric. This is a conservative approach to assessing overheating risk, as it focuses on conditions where the entire house is experiencing elevated temperatures and assumes that occupants will move to cooler areas when possible."),
+            html.P("Basements are not included in the overheating hours calculation. Basements are not always considered living spaces (they are not always finished), and not all houses have basements."),
+            html.P("Peak temperature however is measured as the maximum zone temperature across all above-grade zones and all summer hours, so it captures the hottest conditions experienced in any part of the house, even if other zones are cooler."),
+        ], style={'display': 'inline-block', 'width': '20%', 'verticalAlign': 'top', 'marginLeft': '15px', 'padding': '20px', 'backgroundColor': '#f9f9f9', 'borderRadius': '5px', 'fontSize': '13px', 'lineHeight': '1.6'})
+    ], style={'display': 'flex', 'width': '100%'}),
     
     dcc.Graph(id='temp-distribution-plot', style={'height': '500px'})
 ])
